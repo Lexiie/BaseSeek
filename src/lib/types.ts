@@ -76,3 +76,11 @@ export interface ProjectEntry {
   contracts?: string[];
   highlights?: string[];
 }
+
+export interface SearchContext {
+  intent: IntentKind;
+  query: string;
+  trendingTokens?: TokenMetrics[];
+  aerodromePools?: Array<Record<string, unknown>>;
+  projects?: ProjectEntry[];
+}

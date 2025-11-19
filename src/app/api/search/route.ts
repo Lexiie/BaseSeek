@@ -6,7 +6,8 @@ import { detectProhibitedRequest, fallbackNoData } from "@/lib/guardrails";
 import { detectIntent } from "@/lib/intent";
 import { buildSearchPrompt } from "@/lib/prompt";
 import { rateLimit } from "@/lib/rate-limit";
-import type { SearchResultPayload, SourceLink } from "@/lib/types";
+import { buildFallbackSummary } from "@/lib/summary";
+import type { SearchContext, SearchResultPayload, SourceLink } from "@/lib/types";
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") ?? "global";
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   const projects = getProjectDirectory();
 
-  const context = {
+  const context: SearchContext = {
     intent,
     query,
     trendingTokens,
@@ -57,6 +58,8 @@ export async function POST(req: NextRequest) {
 
   const prompt = buildSearchPrompt(query, context);
   const aiSummary = await callGemini(prompt);
+  const fallbackSummary = buildFallbackSummary(context);
+  const summary = aiSummary?.trim() ? aiSummary : fallbackSummary;
   const topTokenInsights = (trendingTokens ?? [])
     .slice(0, 3)
     .map((token) => {
@@ -77,7 +80,7 @@ export async function POST(req: NextRequest) {
   const payload: SearchResultPayload = {
     query,
     intent,
-    summary: aiSummary || fallbackNoData(),
+    summary,
     insights: topTokenInsights,
     sources,
     risks: [],
