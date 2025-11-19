@@ -6,7 +6,16 @@ import type { ProjectEntry, TokenMetrics } from "./types";
 const DEXSCREENER_TOKEN_ENDPOINT = "https://api.dexscreener.com/latest/dex/tokens/";
 const DEXSCREENER_TRENDING_ENDPOINT = "https://api.dexscreener.com/latest/dex/trending/base";
 const AERODROME_POOLS_ENDPOINT = "https://api.aerodrome.finance/pools";
-const BASESCAN_API = "https://api.basescan.org/api";
+const ETHERSCAN_API_V2 = "https://api.etherscan.io/v2/api";
+
+function getEtherscanApiKey() {
+  return env.etherscanApiKey ?? env.basescanApiKey ?? "";
+}
+
+function buildEtherscanUrl(params: Record<string, string>) {
+  const search = new URLSearchParams({ chain: "base", apikey: getEtherscanApiKey(), ...params });
+  return `${ETHERSCAN_API_V2}?${search.toString()}`;
+}
 
 export async function fetchTrendingTokens() {
   return safeFetch(async () => {
@@ -25,23 +34,48 @@ export async function fetchDexScreenerToken(address: string): Promise<TokenMetri
 }
 
 export async function fetchBaseScanToken(address: string) {
-  if (!env.basescanApiKey) return undefined;
+  const apiKey = getEtherscanApiKey();
+  if (!apiKey) return undefined;
 
   return safeFetch(async () => {
-    const url = `${BASESCAN_API}?module=token&action=tokeninfo&contractaddress=${address}&apikey=${env.basescanApiKey}`;
-    const data = await fetchJson<{ result?: TokenMetrics[] }>(url);
-    return data.result?.[0];
+    const url = buildEtherscanUrl({ module: "token", action: "tokeninfo", contractaddress: address });
+    const data = await fetchJson<{ result?: TokenMetrics | TokenMetrics[] }>(url);
+    const result = data.result;
+    if (Array.isArray(result)) {
+      return result[0];
+    }
+    return result as TokenMetrics | undefined;
   });
 }
 
 export async function fetchBaseScanAbi(address: string) {
-  if (!env.basescanApiKey) return undefined;
+  const apiKey = getEtherscanApiKey();
+  if (!apiKey) return undefined;
 
   return safeFetch(async () => {
-    const url = `${BASESCAN_API}?module=contract&action=getabi&address=${address}&apikey=${env.basescanApiKey}`;
-    const data = await fetchJson<{ result?: string }>(url);
-    if (!data.result) return undefined;
-    return JSON.parse(data.result);
+    const url = buildEtherscanUrl({ module: "contract", action: "getabi", address });
+    const data = await fetchJson<{ result?: unknown }>(url);
+    const result = data.result;
+    let abiRaw: string | undefined;
+
+    if (typeof result === "string") {
+      abiRaw = result;
+    } else if (Array.isArray(result) && result[0]) {
+      const first = result[0] as Record<string, string>;
+      abiRaw = first?.ABI ?? first?.abi;
+    } else if (result && typeof result === "object") {
+      const obj = result as Record<string, string>;
+      abiRaw = obj.ABI ?? obj.abi;
+    }
+
+    if (!abiRaw) return undefined;
+
+    try {
+      return JSON.parse(abiRaw);
+    } catch (error) {
+      console.error("Failed to parse ABI", error);
+      return undefined;
+    }
   });
 }
 
