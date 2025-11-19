@@ -17,7 +17,7 @@ export function detectProhibitedRequest(query: string): GuardrailNotice {
     return {
       blocked: true,
       reason:
-        "Permintaan tersebut tidak dapat dijawab demi alasan keamanan. Namun saya dapat bantu analisis keamanan kontrak atau struktur teknisnya."
+        "This request cannot be answered for security reasons. I can help with contract structure or safety reviews instead."
     };
   }
 
@@ -30,7 +30,7 @@ export function removeFinancialAdvice(text: string): string {
 }
 
 export function fallbackNoData(): string {
-  return "Data tidak ditemukan pada sumber yang tersedia.";
+  return "No data found from the available sources.";
 }
 
 export function tokenRiskFlags(metrics: TokenMetrics): RiskFlag[] {
@@ -39,8 +39,8 @@ export function tokenRiskFlags(metrics: TokenMetrics): RiskFlag[] {
   if (metrics.liquidityUsd !== undefined && metrics.liquidityUsd < 20000) {
     risks.push({
       id: "low-liquidity",
-      label: "Likuiditas sangat rendah",
-      description: "Likuiditas < $20k menandakan token mudah dipump/dump.",
+      label: "Extremely low liquidity",
+      description: "Liquidity < $20k makes the token easy to manipulate.",
       severity: "high"
     });
   }
@@ -48,8 +48,8 @@ export function tokenRiskFlags(metrics: TokenMetrics): RiskFlag[] {
   if (!metrics.address) {
     risks.push({
       id: "no-address",
-      label: "Alamat tidak tersedia",
-      description: "Tidak ada alamat kontrak yang divalidasi.",
+      label: "Contract address missing",
+      description: "A verified contract address was not supplied.",
       severity: "medium"
     });
   }
@@ -64,8 +64,8 @@ export function contractRiskFromAbi(abi: any[]): RiskFlag[] {
   if (lowerNames.includes("mint")) {
     risks.push({
       id: "mint-open",
-      label: "Mint function terdeteksi",
-      description: "⚠ Token dapat dicetak tanpa batas jika fungsi mint terbuka.",
+      label: "Mint function detected",
+      description: "⚠ Tokens may be minted without limit if the mint function is exposed.",
       severity: "high"
     });
   }
@@ -74,7 +74,7 @@ export function contractRiskFromAbi(abi: any[]): RiskFlag[] {
     risks.push({
       id: "owner-control",
       label: "Owner privilege",
-      description: "Owner dapat memegang hak administratif, pastikan ada tim tepercaya.",
+      description: "Owner-reserved functions grant administrative control.",
       severity: "medium"
     });
   }
@@ -82,8 +82,8 @@ export function contractRiskFromAbi(abi: any[]): RiskFlag[] {
   if (lowerNames.includes("pause") || lowerNames.includes("unpause")) {
     risks.push({
       id: "pausable",
-      label: "Kontrak dapat dipause",
-      description: "Pause/unpause memungkinkan tim menghentikan aktivitas token.",
+      label: "Pausable contract",
+      description: "Pause/unpause controls allow the team to halt activity.",
       severity: "info"
     });
   }

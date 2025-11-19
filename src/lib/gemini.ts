@@ -11,7 +11,7 @@ interface GeminiResponse {
 
 export async function callGemini(prompt: string): Promise<string> {
   if (!env.geminiApiKey) {
-    return "GEMINI_API_KEY belum diatur di server.";
+    return "GEMINI_API_KEY is not configured on the server.";
   }
 
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${env.geminiModel}:generateContent`;
@@ -31,7 +31,7 @@ export async function callGemini(prompt: string): Promise<string> {
 
   if (!response.ok) {
     console.error("Gemini error", await response.text());
-    return "LLM tidak dapat dihubungi saat ini.";
+    return "The LLM endpoint is unavailable right now.";
   }
 
   const payload = (await response.json()) as GeminiResponse;

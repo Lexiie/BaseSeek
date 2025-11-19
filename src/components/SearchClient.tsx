@@ -7,9 +7,9 @@ import { SourceList } from "@/components/SourceList";
 import type { SearchResultPayload } from "@/lib/types";
 
 const exampleQueries = [
-  "Token trending di Base minggu ini apa?",
-  "Apa fungsi Aerodrome untuk likuiditas Base?",
-  "Dapps aktif di Base hari ini apa saja?"
+  "What tokens are trending on Base this week?",
+  "Explain how Aerodrome supports Base liquidity.",
+  "Which Base dapps have notable activity today?"
 ];
 
 export function SearchClient() {
@@ -28,12 +28,12 @@ export function SearchClient() {
         body: JSON.stringify({ query: prompt })
       });
       if (!response.ok) {
-        throw new Error("Gagal menjalankan pencarian");
+        throw new Error("Search failed. Please try again.");
       }
       const payload: SearchResultPayload = await response.json();
       setResult(payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Terjadi kesalahan tidak diketahui");
+      setError(err instanceof Error ? err.message : "Unexpected error, please retry.");
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +51,7 @@ export function SearchClient() {
 
   const requestMore = async () => {
     if (!result) return;
-    await runSearch(`${result.query}. Jelaskan lebih detail.`);
+    await runSearch(`${result.query}. Provide additional technical detail.`);
   };
 
   return (
@@ -63,7 +63,7 @@ export function SearchClient() {
             name="search"
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            placeholder="Cari apa saja tentang Base..."
+            placeholder="Ask anything about Base..."
             className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-5 py-4 text-base text-white outline-none transition focus:border-base-500"
           />
           <button
@@ -71,7 +71,7 @@ export function SearchClient() {
             disabled={isLoading}
             className="rounded-2xl bg-base-500 px-6 py-4 font-semibold text-white transition hover:bg-base-300 disabled:opacity-60"
           >
-            {isLoading ? <LoadingDots /> : "Cari"}
+            {isLoading ? <LoadingDots /> : "Search"}
           </button>
         </form>
         <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-400">
@@ -124,7 +124,7 @@ export function SearchClient() {
             </article>
           ) : (
             <p className="text-sm text-slate-400">
-              Ketik pertanyaan seperti “Token trending di Base minggu ini apa?” untuk memulai.
+              Ask a question such as “What tokens are trending on Base this week?” to get started.
             </p>
           )}
         </div>

@@ -2,16 +2,16 @@
   {
     "name": "BaseSwap",
     "category": "DEX",
-    "description": "AMM dan liquidity hub native di jaringan Base.",
+    "description": "Native AMM and liquidity hub on the Base network.",
     "website": "https://baseswap.fi",
     "tags": ["dex", "swap", "liquidity"],
     "contracts": ["0x0000000000000000000000000000000000000000"],
-    "highlights": ["Fee rendah", "Integrasi wallet populer"]
+    "highlights": ["Low swap fees", "Popular wallet integrations"]
   },
   {
     "name": "Aerodrome",
     "category": "DEX",
-    "description": "Solidly-style DEX yang digunakan untuk liquidity routing besar di Base.",
+    "description": "Solidly-style DEX powering major liquidity routing on Base.",
     "website": "https://aerodrome.finance",
     "tags": ["dex", "ve33", "governance"],
     "contracts": ["0x4200000000000000000000000000000000000006"],
@@ -20,28 +20,28 @@
   {
     "name": "BaseName",
     "category": "Identity",
-    "description": "ENS-like naming service untuk Base", 
+    "description": "ENS-like naming service for Base",
     "website": "https://basename.org",
     "tags": ["identity", "naming"],
     "contracts": ["0x1000000000000000000000000000000000000001"],
-    "highlights": ["Mint nama web3", "Resolve wallet"]
+    "highlights": ["Mint web3 names", "Resolve wallets"]
   },
   {
     "name": "Parallel Finance",
     "category": "Lending",
-    "description": "Protocol lending non-custodial yang hadir di Base.",
+    "description": "Non-custodial lending protocol deployed on Base.",
     "website": "https://parallel.fi",
     "tags": ["lending", "defi"],
     "contracts": ["0x2000000000000000000000000000000000000002"],
-    "highlights": ["Risk oracle", "Multi-collateral"]
+    "highlights": ["Risk oracle", "Multi-collateral markets"]
   },
   {
     "name": "BasePaint",
     "category": "Social",
-    "description": "Kanvas kolaboratif komunitas Base", 
+    "description": "Community collaborative canvas built for Base",
     "website": "https://basepaint.xyz",
     "tags": ["nft", "social"],
     "contracts": ["0x3000000000000000000000000000000000000003"],
-    "highlights": ["24h canvas", "Revenue share"]
+    "highlights": ["24h rotating canvas", "Revenue share"]
   }
 ]

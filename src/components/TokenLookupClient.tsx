@@ -28,12 +28,12 @@ export function TokenLookupClient() {
     try {
       const response = await fetch(`/api/token?address=${address}`);
       if (!response.ok) {
-        throw new Error("Gagal memuat token");
+        throw new Error("Failed to load token data");
       }
       const payload: TokenApiResponse = await response.json();
       setResult(payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error tidak diketahui");
+      setError(err instanceof Error ? err.message : "Unknown error, please retry");
     } finally {
       setIsLoading(false);
     }
@@ -44,14 +44,16 @@ export function TokenLookupClient() {
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Token Lookup</p>
-          <h2 className="text-2xl font-semibold">Analisis Cepat Token</h2>
-          <p className="mt-1 text-sm text-slate-400">Fetch data DexScreener + BaseScan lalu rangkum dengan Gemini.</p>
+          <h2 className="text-2xl font-semibold">Instant Token Diagnostics</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Pull lightweight market + holder stats and summarize them with Gemini.
+          </p>
         </div>
         <form onSubmit={lookup} className="flex w-full flex-col gap-3 md:w-1/2 md:flex-row">
           <input
             value={address}
             onChange={(event) => setAddress(event.target.value)}
-            placeholder="Alamat token"
+            placeholder="Token address"
             className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-white outline-none focus:border-base-500"
           />
           <button
@@ -59,7 +61,7 @@ export function TokenLookupClient() {
             disabled={isLoading}
             className="rounded-2xl bg-base-500 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
           >
-            {isLoading ? <LoadingDots /> : "Cek"}
+            {isLoading ? <LoadingDots /> : "Check"}
           </button>
         </form>
       </div>
@@ -74,11 +76,11 @@ export function TokenLookupClient() {
             </div>
             <dl className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <dt className="text-slate-400">Harga</dt>
+                <dt className="text-slate-400">Price</dt>
                 <dd className="text-white">${formatNumber(result.token.priceUsd)}</dd>
               </div>
               <div>
-                <dt className="text-slate-400">Likuiditas</dt>
+                <dt className="text-slate-400">Liquidity</dt>
                 <dd className="text-white">${formatNumber(result.token.liquidityUsd)}</dd>
               </div>
               <div>
@@ -91,7 +93,7 @@ export function TokenLookupClient() {
               </div>
             </dl>
             <div className="text-xs text-slate-400">
-              Sumber:
+              Sources:
               {result.sources.map((source) => (
                 <a key={source.url} className="ml-2 underline" href={source.url} target="_blank" rel="noreferrer">
                   {source.label}

@@ -44,7 +44,7 @@ export function ProjectDirectoryClient() {
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Cari project"
+          placeholder="Search project name or keyword"
           className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-5 py-3 text-sm text-white outline-none focus:border-base-500"
         />
         <select
@@ -60,7 +60,7 @@ export function ProjectDirectoryClient() {
         </select>
       </div>
       {loading && <p className="text-sm text-slate-400">Loading directory...</p>}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {projects.map((project) => (
           <article key={project.name} className="rounded-3xl border border-white/5 bg-slate-900/40 p-5 shadow-card">
             <div className="flex items-center justify-between">
@@ -95,6 +95,9 @@ export function ProjectDirectoryClient() {
           </article>
         ))}
       </div>
+      {!projects.length && !loading && (
+        <p className="text-center text-sm text-slate-400">No projects match the current filters.</p>
+      )}
     </div>
   );
 }

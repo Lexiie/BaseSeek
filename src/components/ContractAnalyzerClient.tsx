@@ -18,12 +18,12 @@ export function ContractAnalyzerClient() {
     try {
       const response = await fetch(`/api/contract?address=${address}`);
       if (!response.ok) {
-        throw new Error("Gagal memuat data kontrak");
+        throw new Error("Failed to load contract data");
       }
       const payload: ContractAnalysisResponse = await response.json();
       setResult(payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error tidak diketahui");
+      setError(err instanceof Error ? err.message : "Unknown error, please retry");
     } finally {
       setIsLoading(false);
     }
@@ -35,7 +35,7 @@ export function ContractAnalyzerClient() {
         <input
           value={address}
           onChange={(event) => setAddress(event.target.value)}
-          placeholder="Alamat kontrak Base"
+          placeholder="Base contract address"
           className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-5 py-4 text-base text-white outline-none transition focus:border-base-500"
         />
         <button
@@ -43,7 +43,7 @@ export function ContractAnalyzerClient() {
           disabled={isLoading}
           className="rounded-2xl bg-base-500 px-6 py-4 font-semibold text-white transition hover:bg-base-300 disabled:opacity-60"
         >
-          {isLoading ? <LoadingDots /> : "Analisa"}
+          {isLoading ? <LoadingDots /> : "Analyze"}
         </button>
       </form>
       {error && <p className="text-sm text-red-400">{error}</p>}
@@ -52,10 +52,10 @@ export function ContractAnalyzerClient() {
         <section className="rounded-3xl border border-white/5 bg-slate-900/40 p-6 shadow-card">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Alamat</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Address</p>
               <p className="font-mono text-sm text-slate-200">{result.address}</p>
             </div>
-            <div className="text-sm text-slate-400">Kategori: {result.categories.join(", ") || "-"}</div>
+            <div className="text-sm text-slate-400">Categories: {result.categories.join(", ") || "-"}</div>
           </div>
 
           <article className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100">
