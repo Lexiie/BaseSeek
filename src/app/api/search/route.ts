@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
   }
 
   const intent = detectIntent(query);
+  const originUrl = env.appUrl || req.nextUrl.origin;
 
   const [trendingTokens, aerodromePools] = await Promise.all([
     fetchTrendingTokens(),
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
   if (aerodromePools?.length) {
     sources.push({ label: "Aerodrome Pools", url: "https://aerodrome.finance" });
   }
-  sources.push({ label: "Curated Projects", url: `${env.appUrl}/api/projects` });
+  sources.push({ label: "Curated Projects", url: `${originUrl}/api/projects` });
 
   const payload: SearchResultPayload = {
     query,
