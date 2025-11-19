@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://baseseek.local")
 };
 
-const navLinks = [
+const navLinks: Array<{ href: Route; label: string }> = [
   { href: "/", label: "Search" },
   { href: "/contract", label: "Contract Analyzer" },
   { href: "/projects", label: "Project Directory" }
