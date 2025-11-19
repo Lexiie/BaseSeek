@@ -61,7 +61,7 @@ export interface ContractFunctionMeta {
 
 export interface ContractAnalysisResponse {
   address: string;
-  abi: unknown[];
+  abi: ContractFunctionMeta[];
   categories: string[];
   risks: RiskFlag[];
   aiSummary: string;
