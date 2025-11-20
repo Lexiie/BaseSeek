@@ -78,6 +78,7 @@ export interface ProjectEntry {
 }
 
 export interface SearchContext {
+  [key: string]: unknown;
   intent: IntentKind;
   query: string;
   trendingTokens?: TokenMetrics[];
