@@ -83,7 +83,14 @@ export async function fetchBaseScanAbi(address: string) {
 export async function fetchAerodromeTopPools() {
   return safeFetch(async () => {
     const data = await fetchJson<{
-      data?: Array<{ attributes?: Record<string, unknown> }>;
+      data?: Array<{
+        attributes?: {
+          name?: string;
+          symbol?: string;
+          reserve_in_usd?: number;
+          volume_usd?: { h24?: number };
+        };
+      }>;
     }>(`${GECKOTERMINAL_AERODROME_ENDPOINT}?page=1`);
 
     return (
