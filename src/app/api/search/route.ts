@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/lib/env";
-import { fetchAerodromeTopPools, fetchTrendingTokens, getProjectDirectory } from "@/lib/apis";
+import { fetchTrendingTokens, getProjectDirectory } from "@/lib/apis";
 import { callGemini } from "@/lib/gemini";
 import { detectProhibitedRequest, fallbackNoData } from "@/lib/guardrails";
 import { detectIntent } from "@/lib/intent";
@@ -41,10 +41,7 @@ export async function POST(req: NextRequest) {
   const intent = detectIntent(query);
   const originUrl = env.appUrl || req.nextUrl.origin;
 
-  const [trendingTokens, aerodromePools] = await Promise.all([
-    fetchTrendingTokens(),
-    fetchAerodromeTopPools()
-  ]);
+  const trendingTokens = await fetchTrendingTokens();
 
   const projects = getProjectDirectory();
 
@@ -52,7 +49,6 @@ export async function POST(req: NextRequest) {
     intent,
     query,
     trendingTokens,
-    aerodromePools,
     projects
   };
 
@@ -62,7 +58,7 @@ export async function POST(req: NextRequest) {
       {
         intent,
         trendingCount: trendingTokens?.length ?? 0,
-        aerodromeCount: aerodromePools?.length ?? 0,
+        aerodromeCount: 0,
         projectCount: projects.length
       },
       null,
@@ -89,9 +85,6 @@ export async function POST(req: NextRequest) {
   const sources: SourceLink[] = [];
   if (trendingTokens?.length) {
     sources.push({ label: "DexScreener Base", url: "https://dexscreener.com/base" });
-  }
-  if (aerodromePools?.length) {
-    sources.push({ label: "Aerodrome Pools", url: "https://aerodrome.finance" });
   }
   sources.push({ label: "Curated Projects", url: `${originUrl}/api/projects` });
 

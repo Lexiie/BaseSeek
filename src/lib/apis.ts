@@ -5,7 +5,7 @@ import type { ProjectEntry, TokenMetrics } from "./types";
 
 const DEXSCREENER_TOKEN_ENDPOINT = "https://api.dexscreener.com/latest/dex/tokens/";
 const DEXSCREENER_TRENDING_ENDPOINT = "https://api.dexscreener.com/latest/dex/trending/base";
-const AERODROME_POOLS_ENDPOINT = "https://aerodrome.finance/api/pools";
+const AERODROME_POOLS_ENDPOINT = "https://aerodrome.finance/api/pools.json";
 const ETHERSCAN_API_V2 = "https://api.etherscan.io/v2/api";
 
 function getEtherscanApiKey() {
