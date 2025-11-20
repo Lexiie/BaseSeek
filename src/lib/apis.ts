@@ -91,7 +91,12 @@ export async function fetchAerodromeTopPools() {
           volume_usd?: { h24?: number };
         };
       }>;
-    }>(`${GECKOTERMINAL_AERODROME_ENDPOINT}?page=1`);
+    }>(`${GECKOTERMINAL_AERODROME_ENDPOINT}?page=1`, {
+      headers: {
+        Accept: "application/json",
+        ...(env.geckoTerminalApiKey ? { "X-API-KEY": env.geckoTerminalApiKey } : {})
+      }
+    });
 
     return (
       data?.data?.map((pool) => ({

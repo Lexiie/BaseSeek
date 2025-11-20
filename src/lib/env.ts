@@ -8,5 +8,6 @@ export const env = {
   geminiModel: getEnv("GEMINI_MODEL", "gemini-2.5-flash"),
   basescanApiKey: getEnv("BASESCAN_API_KEY"),
   etherscanApiKey: getEnv("ETHERSCAN_API_KEY"),
+  geckoTerminalApiKey: getEnv("GECKOTERMINAL_API_KEY"),
   appUrl: getEnv("APP_URL", "http://localhost:3000")
 };
