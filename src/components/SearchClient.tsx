@@ -59,7 +59,7 @@ export function SearchClient() {
     await runSearch(`${result.query}. Provide additional technical detail.`);
   };
 
-  const topTokenInsights = Array.isArray((result?.raw as any)?.trendingTokens)
+  const topTokenInsights: string[] = Array.isArray((result?.raw as any)?.trendingTokens)
     ? (result?.raw as any).trendingTokens.slice(0, 3).map((token: any) => {
         const numericPrice = Number(token?.priceUsd);
         const price = Number.isFinite(numericPrice) ? `$${numericPrice.toFixed(4)}` : "n/a";
