@@ -56,10 +56,28 @@ export async function POST(req: NextRequest) {
     projects
   };
 
+  console.log(
+    "[search] context",
+    JSON.stringify(
+      {
+        intent,
+        trendingCount: trendingTokens?.length ?? 0,
+        aerodromeCount: aerodromePools?.length ?? 0,
+        projectCount: projects.length
+      },
+      null,
+      2
+    )
+  );
+
   const prompt = buildSearchPrompt(query, context);
   const aiSummary = await callGemini(prompt);
   const fallbackSummary = buildFallbackSummary(context);
   const summary = aiSummary?.trim() ? aiSummary : fallbackSummary;
+
+  if (!aiSummary?.trim()) {
+    console.warn("[search] falling back to data summary", { query });
+  }
   const topTokenInsights = (trendingTokens ?? [])
     .slice(0, 3)
     .map((token) => {
