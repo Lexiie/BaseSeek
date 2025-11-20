@@ -5,7 +5,8 @@ import type { ProjectEntry, TokenMetrics } from "./types";
 
 const DEXSCREENER_TOKEN_ENDPOINT = "https://api.dexscreener.com/latest/dex/tokens/";
 const DEXSCREENER_TRENDING_ENDPOINT = "https://api.dexscreener.com/latest/dex/trending/base";
-const AERODROME_POOLS_ENDPOINT = "https://aerodrome.finance/api/pools.json";
+const GECKOTERMINAL_AERODROME_ENDPOINT =
+  "https://api.geckoterminal.com/api/v2/networks/base/dexes/aerodrome-base/pools";
 const ETHERSCAN_API_V2 = "https://api.etherscan.io/v2/api";
 
 function getEtherscanApiKey() {
@@ -81,8 +82,17 @@ export async function fetchBaseScanAbi(address: string) {
 
 export async function fetchAerodromeTopPools() {
   return safeFetch(async () => {
-    const data = await fetchJson<{ data?: Array<Record<string, unknown>> }>(AERODROME_POOLS_ENDPOINT);
-    return data?.data ?? [];
+    const data = await fetchJson<{
+      data?: Array<{ attributes?: Record<string, unknown> }>;
+    }>(`${GECKOTERMINAL_AERODROME_ENDPOINT}?page=1`);
+
+    return (
+      data?.data?.map((pool) => ({
+        name: pool.attributes?.name ?? pool.attributes?.symbol,
+        reserveUsd: pool.attributes?.reserve_in_usd,
+        volume24hUsd: pool.attributes?.volume_usd?.h24
+      })) ?? []
+    );
   });
 }
 
