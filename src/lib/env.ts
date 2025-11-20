@@ -9,5 +9,6 @@ export const env = {
   basescanApiKey: getEnv("BASESCAN_API_KEY"),
   etherscanApiKey: getEnv("ETHERSCAN_API_KEY"),
   geckoTerminalApiKey: getEnv("GECKOTERMINAL_API_KEY"),
+  etherscanChainId: getEnv("ETHERSCAN_CHAIN_ID", "8453"),
   appUrl: getEnv("APP_URL", "http://localhost:3000")
 };

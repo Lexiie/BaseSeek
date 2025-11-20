@@ -14,7 +14,11 @@ function getEtherscanApiKey() {
 }
 
 function buildEtherscanUrl(params: Record<string, string>) {
-  const search = new URLSearchParams({ chain: "base", apikey: getEtherscanApiKey(), ...params });
+  const search = new URLSearchParams({
+    chainid: env.etherscanChainId ?? "8453",
+    apikey: getEtherscanApiKey(),
+    ...params
+  });
   return `${ETHERSCAN_API_V2}?${search.toString()}`;
 }
 
