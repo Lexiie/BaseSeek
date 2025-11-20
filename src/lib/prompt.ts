@@ -11,8 +11,17 @@ export function buildSearchPrompt(query: string, data: SearchContext | Record<st
   return [systemPrompt, buildContextBlock(data), `User question: ${query}`].join("\n\n");
 }
 
+const fallbackPrompt = `You are BaseSeek, an assistant for the Base ecosystem.
+If the <context> does not contain relevant data, switch to FALLBACK-KNOWLEDGE mode:
+- Provide a helpful, high-level explanation.
+- Do NOT invent numbers, price movements, future returns, or token-specific data.
+- Do NOT recommend buying/selling or claim a token will perform well.
+- You may explain general concepts such as how returns in DeFi are generated, risk factors, mechanisms on Base, how to analyze yield, token categories, and diligence steps.
+- Keep the explanation Base-specific when possible.
+- Always include: \"This is general information, not financial advice.\".`;
+
 export function buildNoContextPrompt(query: string): string {
-  return `You are BaseSeek, an assistant for the Base ecosystem. Real-time data is unavailable. Provide a cautious, qualitative answer for the following question without inventing numbers. Emphasize that live metrics were not retrieved.\n\nUser question: ${query}`;
+  return `${fallbackPrompt}\n\nUser question: ${query}`;
 }
 
 export function sanitizeLLMResponse(text: string): string {
