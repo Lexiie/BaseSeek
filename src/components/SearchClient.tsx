@@ -17,6 +17,11 @@ export function SearchClient() {
   const [result, setResult] = useState<SearchResultPayload | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const formatSummary = (text: string) =>
+    text
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean);
 
   const runSearch = useCallback(async (prompt: string) => {
     setIsLoading(true);
@@ -53,6 +58,14 @@ export function SearchClient() {
     if (!result) return;
     await runSearch(`${result.query}. Provide additional technical detail.`);
   };
+
+  const topTokenInsights = Array.isArray((result?.raw as any)?.trendingTokens)
+    ? (result?.raw as any).trendingTokens.slice(0, 3).map((token: any) => {
+        const numericPrice = Number(token?.priceUsd);
+        const price = Number.isFinite(numericPrice) ? `$${numericPrice.toFixed(4)}` : "n/a";
+        return `${token?.symbol ?? token?.name ?? "Token"} · price ${price}`;
+      })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -109,13 +122,27 @@ export function SearchClient() {
             </p>
           ) : result ? (
             <article className="space-y-4 text-sm leading-relaxed text-slate-100">
-              <p>{result.summary}</p>
+              <div className="space-y-2">
+                {formatSummary(result.summary).map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
               {result.insights?.length > 0 && (
                 <ul className="list-disc space-y-1 pl-5">
                   {result.insights.map((insight) => (
                     <li key={insight}>{insight}</li>
                   ))}
                 </ul>
+              )}
+              {topTokenInsights.length > 0 && (
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Top Tokens</p>
+                  <ul className="mt-2 list-disc space-y-1 pl-5">
+                    {topTokenInsights.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               )}
               {result.guardrail?.blocked && (
                 <p className="text-amber-300">{result.guardrail.reason}</p>

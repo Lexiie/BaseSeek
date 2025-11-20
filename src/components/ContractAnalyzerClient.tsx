@@ -10,6 +10,11 @@ export function ContractAnalyzerClient() {
   const [result, setResult] = useState<ContractAnalysisResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const formatSummary = (text: string) =>
+    text
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean);
 
   const analyze = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -58,8 +63,10 @@ export function ContractAnalyzerClient() {
             <div className="text-sm text-slate-400">Categories: {result.categories.join(", ") || "-"}</div>
           </div>
 
-          <article className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100">
-            {result.aiSummary}
+          <article className="mt-4 space-y-2 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100">
+            {formatSummary(result.aiSummary).map((line) => (
+              <p key={line}>{line}</p>
+            ))}
           </article>
 
           {result.risks.length > 0 && (

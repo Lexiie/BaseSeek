@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     .map((token) => {
       const numericPrice = Number(token?.priceUsd);
       const price = Number.isFinite(numericPrice) ? `$${numericPrice.toFixed(4)}` : "n/a";
-      return `${token?.symbol ?? token?.name ?? "Token"} · harga ${price}`;
+      return `${token?.symbol ?? token?.name ?? "Token"} · price ${price}`;
     });
 
   const sources: SourceLink[] = [];
