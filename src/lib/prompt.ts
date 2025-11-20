@@ -11,6 +11,10 @@ export function buildSearchPrompt(query: string, data: SearchContext | Record<st
   return [systemPrompt, buildContextBlock(data), `User question: ${query}`].join("\n\n");
 }
 
+export function buildNoContextPrompt(query: string): string {
+  return `You are BaseSeek, an assistant for the Base ecosystem. Real-time data is unavailable. Provide a cautious, qualitative answer for the following question without inventing numbers. Emphasize that live metrics were not retrieved.\n\nUser question: ${query}`;
+}
+
 export function sanitizeLLMResponse(text: string): string {
   return removeFinancialAdvice(text)
     .replace(/:+\s*(\n|$)/g, ":\n")

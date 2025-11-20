@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchBaseScanAbi } from "@/lib/apis";
 import { callGemini } from "@/lib/gemini";
 import { contractRiskFromAbi, fallbackNoData } from "@/lib/guardrails";
-import { buildSearchPrompt } from "@/lib/prompt";
+import { buildNoContextPrompt, buildSearchPrompt } from "@/lib/prompt";
 import type { ContractAnalysisResponse, ContractFunctionMeta } from "@/lib/types";
 
 const adminKeywords = ["owner", "admin", "pause", "unpause", "upgrade", "set"];
@@ -54,7 +54,12 @@ export async function GET(req: NextRequest) {
   }
 
   const prompt = buildSearchPrompt(`Jelaskan risiko kontrak ${address}`, { abi });
-  const aiSummary = await callGemini(prompt);
+  let aiSummary = await callGemini(prompt);
+  if (!aiSummary?.trim() || aiSummary.trim() === fallbackNoData()) {
+    aiSummary = await callGemini(
+      buildNoContextPrompt(`Contract risk request for ${address}. Summarize common risk considerations when ABI data is unavailable.`)
+    );
+  }
   const risks = contractRiskFromAbi(abi);
   const categories = categorizeFunctions(abi);
 

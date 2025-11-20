@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchBaseScanToken, fetchDexScreenerToken } from "@/lib/apis";
 import { callGemini } from "@/lib/gemini";
-import { buildSearchPrompt } from "@/lib/prompt";
-import { tokenRiskFlags } from "@/lib/guardrails";
+import { buildNoContextPrompt, buildSearchPrompt } from "@/lib/prompt";
+import { fallbackNoData, tokenRiskFlags } from "@/lib/guardrails";
 import type { TokenApiResponse, TokenMetrics } from "@/lib/types";
 
 export async function GET(req: NextRequest) {
@@ -36,7 +36,14 @@ export async function GET(req: NextRequest) {
     baseScanToken
   });
 
-  const aiSummary = await callGemini(prompt);
+  let aiSummary = await callGemini(prompt);
+  if (!aiSummary?.trim() || aiSummary.trim() === fallbackNoData()) {
+    aiSummary = await callGemini(
+      buildNoContextPrompt(
+        `Token analysis request for ${token.symbol ?? token.name ?? address}. Explain general due diligence steps for Base tokens when live market data is unavailable.`
+      )
+    );
+  }
   const risks = tokenRiskFlags(token);
 
   const response: TokenApiResponse = {

@@ -4,7 +4,7 @@ import { fetchAerodromeTopPools, fetchTrendingTokens, getProjectDirectory } from
 import { callGemini } from "@/lib/gemini";
 import { detectProhibitedRequest, fallbackNoData } from "@/lib/guardrails";
 import { detectIntent } from "@/lib/intent";
-import { buildSearchPrompt } from "@/lib/prompt";
+import { buildNoContextPrompt, buildSearchPrompt } from "@/lib/prompt";
 import { rateLimit } from "@/lib/rate-limit";
 import { buildFallbackSummary } from "@/lib/summary";
 import type { SearchContext, SearchResultPayload, SourceLink } from "@/lib/types";
@@ -71,8 +71,11 @@ export async function POST(req: NextRequest) {
   );
 
   const prompt = buildSearchPrompt(query, context);
-  const aiSummary = await callGemini(prompt);
+  let aiSummary = await callGemini(prompt);
   const fallbackSummary = buildFallbackSummary(context);
+  if (!aiSummary?.trim() || aiSummary.trim() === fallbackNoData()) {
+    aiSummary = await callGemini(buildNoContextPrompt(query));
+  }
   const summary = aiSummary?.trim() ? aiSummary : fallbackSummary;
 
   if (!aiSummary?.trim()) {
