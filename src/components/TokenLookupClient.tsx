@@ -18,7 +18,7 @@ const formatInteger = (value?: number | string) => {
 const formatSummary = (text: string) =>
   text
     .split(/\n+/)
-    .map((line) => line.trim())
+    .map((line) => line.replace(/\*\*/g, "").trim())
     .filter(Boolean);
 
 export function TokenLookupClient() {
@@ -109,7 +109,7 @@ export function TokenLookupClient() {
           </article>
           <article className="space-y-3">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-400">AI Summary</p>
-            <div className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-100">
+            <div className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-100 break-words">
               {formatSummary(result.aiSummary).map((line) => (
                 <p key={line} className="mb-2 last:mb-0">
                   {line}

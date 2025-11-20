@@ -13,7 +13,7 @@ export function ContractAnalyzerClient() {
   const formatSummary = (text: string) =>
     text
       .split(/\n+/)
-      .map((line) => line.trim())
+      .map((line) => line.replace(/\*\*/g, "").trim())
       .filter(Boolean);
 
   const analyze = async (event: React.FormEvent) => {
@@ -63,7 +63,7 @@ export function ContractAnalyzerClient() {
             <div className="text-sm text-slate-400">Categories: {result.categories.join(", ") || "-"}</div>
           </div>
 
-          <article className="mt-4 space-y-2 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100">
+          <article className="mt-4 space-y-2 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100 break-words">
             {formatSummary(result.aiSummary).map((line) => (
               <p key={line}>{line}</p>
             ))}

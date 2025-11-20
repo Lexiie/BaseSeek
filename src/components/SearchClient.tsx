@@ -20,7 +20,7 @@ export function SearchClient() {
   const formatSummary = (text: string) =>
     text
       .split(/\n+/)
-      .map((line) => line.trim())
+      .map((line) => line.replace(/\*\*/g, "").trim())
       .filter(Boolean);
 
   const runSearch = useCallback(async (prompt: string) => {
@@ -121,7 +121,7 @@ export function SearchClient() {
               <LoadingDots />
             </p>
           ) : result ? (
-            <article className="space-y-4 text-sm leading-relaxed text-slate-100">
+            <article className="space-y-4 break-words text-sm leading-relaxed text-slate-100">
               <div className="space-y-2">
                 {formatSummary(result.summary).map((line) => (
                   <p key={line}>{line}</p>
