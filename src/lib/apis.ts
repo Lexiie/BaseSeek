@@ -69,12 +69,14 @@ export async function fetchBaseScanAbi(address: string) {
       abiRaw = obj.ABI ?? obj.abi;
     }
 
-    if (!abiRaw) return undefined;
+    if (!abiRaw || abiRaw.toLowerCase().startsWith("missing")) {
+      return undefined;
+    }
 
     try {
       return JSON.parse(abiRaw);
     } catch (error) {
-      console.error("Failed to parse ABI", error);
+      console.error("Failed to parse ABI", { address, error: (error as Error).message });
       return undefined;
     }
   });
