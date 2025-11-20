@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     pairs: dexToken?.pairs
   };
 
-  const prompt = buildSearchPrompt(`Berikan analisis token ${token.symbol ?? token.name ?? address}`, {
+  const prompt = buildSearchPrompt(`Provide a neutral token analysis for ${token.symbol ?? token.name ?? address}`, {
     token,
     dexToken,
     baseScanToken

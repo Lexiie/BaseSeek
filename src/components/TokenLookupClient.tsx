@@ -15,6 +15,12 @@ const formatInteger = (value?: number | string) => {
   return Number.isFinite(numeric) ? Math.round(numeric).toLocaleString() : "-";
 };
 
+const formatSummary = (text: string) =>
+  text
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
 export function TokenLookupClient() {
   const [address, setAddress] = useState("0x4200000000000000000000000000000000000006");
   const [result, setResult] = useState<TokenApiResponse | null>(null);
@@ -46,7 +52,7 @@ export function TokenLookupClient() {
           <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Token Lookup</p>
           <h2 className="text-2xl font-semibold">Instant Token Diagnostics</h2>
           <p className="mt-1 text-sm text-slate-400">
-            Pull lightweight market + holder stats and summarize them with Gemini.
+            Pull lightweight market + holder stats and summarize them with AI.
           </p>
         </div>
         <form onSubmit={lookup} className="flex w-full flex-col gap-3 md:w-1/2 md:flex-row">
@@ -103,7 +109,13 @@ export function TokenLookupClient() {
           </article>
           <article className="space-y-3">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-400">AI Summary</p>
-            <p className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-100">{result.aiSummary}</p>
+            <div className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-100">
+              {formatSummary(result.aiSummary).map((line) => (
+                <p key={line} className="mb-2 last:mb-0">
+                  {line}
+                </p>
+              ))}
+            </div>
             {result.risks.length > 0 && (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Risk Flags</p>
