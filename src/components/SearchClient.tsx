@@ -69,6 +69,37 @@ export function SearchClient() {
       })
     : [];
 
+  const describeRawValue = (value: unknown) => {
+    if (Array.isArray(value)) {
+      return `${value.length} items`;
+    }
+    if (value && typeof value === "object") {
+      return `${Object.keys(value as Record<string, unknown>).length} fields`;
+    }
+    if (typeof value === "string") {
+      return value.length > 40 ? `${value.slice(0, 37)}…` : value;
+    }
+    if (typeof value === "number") {
+      return Number.isFinite(value) ? Number(value).toString() : "n/a";
+    }
+    if (typeof value === "boolean") {
+      return value ? "true" : "false";
+    }
+    return typeof value;
+  };
+
+  const rawSummaryEntries =
+    result?.raw && typeof result.raw === "object"
+      ? Object.entries(result.raw as Record<string, unknown>)
+          .slice(0, 3)
+          .map(([key, value]) => ({ key, value: describeRawValue(value) }))
+      : [];
+
+  const rawFieldCount =
+    result?.raw && typeof result.raw === "object"
+      ? Object.keys(result.raw as Record<string, unknown>).length
+      : 0;
+
   return (
     <div className="space-y-6">
       <section className="glass-panel p-6 sm:p-8">
@@ -198,12 +229,32 @@ export function SearchClient() {
         ) : null}
 
         {result?.raw ? (
-          <details className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-xs text-slate-300">
-            <summary className="cursor-pointer text-sm font-semibold">Raw Context</summary>
-            <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-white/5 bg-slate-950/40 p-3 font-mono text-[11px] text-slate-300 whitespace-pre-wrap">
-              {JSON.stringify(result.raw, null, 2)}
+          <section className="mt-6 space-y-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Raw context</p>
+              <p className="text-sm text-slate-400">
+                Snapshot of {rawFieldCount} top-level fields pulled into the answer.
+              </p>
             </div>
-          </details>
+            {rawSummaryEntries.length > 0 && (
+              <ul className="flex flex-wrap gap-2 text-[11px] text-slate-300">
+                {rawSummaryEntries.map((item) => (
+                  <li
+                    key={item.key}
+                    className="rounded-full border border-white/10 bg-slate-950/40 px-3 py-1 text-left"
+                  >
+                    <span className="text-slate-500">{item.key}:</span> <span className="text-slate-100">{item.value}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <details className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-xs text-slate-300">
+              <summary className="cursor-pointer text-sm font-semibold text-slate-100">Expand structured detail</summary>
+              <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-white/5 bg-black/40 p-3 font-mono text-[11px] text-slate-200 whitespace-pre-wrap">
+                {JSON.stringify(result.raw, null, 2)}
+              </div>
+            </details>
+          </section>
         ) : null}
       </section>
     </div>
