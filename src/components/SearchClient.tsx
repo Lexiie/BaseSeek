@@ -200,9 +200,9 @@ export function SearchClient() {
         {result?.raw ? (
           <details className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-xs text-slate-300">
             <summary className="cursor-pointer text-sm font-semibold">Raw Context</summary>
-            <pre className="mt-3 overflow-x-auto text-[11px] text-slate-400">
+            <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-white/5 bg-slate-950/40 p-3 font-mono text-[11px] text-slate-300 whitespace-pre-wrap">
               {JSON.stringify(result.raw, null, 2)}
-            </pre>
+            </div>
           </details>
         ) : null}
       </section>
