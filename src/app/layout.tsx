@@ -28,7 +28,7 @@ export default function RootLayout({
             <SiteHeader />
             <main className="mx-auto max-w-6xl px-4 pb-20 pt-10 sm:px-6 lg:px-8">{children}</main>
             <footer className="mx-auto max-w-6xl border-t border-cyber-500/20 px-4 py-6 text-center text-xs text-cyber-200">
-              Powered by public Base ecosystem data. Stay vigilant and verify on-chain activity.
+              Powered by public Base ecosystem data. Stay vigilant and verify on-chain activity. Tip jar: 0x3125e0aDE456c62827E4A836eF237B501431Df2E
             </footer>
           </div>
         </div>

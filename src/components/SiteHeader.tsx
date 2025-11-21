@@ -11,7 +11,7 @@ export function SiteHeader() {
   const closeMenu = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-6 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full px-4 pt-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-6xl items-center gap-4 rounded-[28px] border border-cyber-500/40 bg-black/40 px-5 py-4 shadow-[0_25px_60px_-40px_rgba(0,240,255,0.8)] backdrop-blur-2xl">
         <Link href="/" className="flex flex-1 items-center gap-3 text-sm font-semibold tracking-[0.2em]" onClick={closeMenu}>
           <span className="glow-ring inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-cyber-accent text-lg text-black">
