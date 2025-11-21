@@ -5,7 +5,7 @@ function getEnv(key: string, fallback?: string) {
 
 export const env = {
   geminiApiKey: getEnv("GEMINI_API_KEY"),
-  geminiModel: getEnv("GEMINI_MODEL", "gemini-2.5-flash"),
+  geminiModel: getEnv("GEMINI_MODEL", "gemini-3.0-flash"),
   basescanApiKey: getEnv("BASESCAN_API_KEY"),
   etherscanApiKey: getEnv("ETHERSCAN_API_KEY"),
   geckoTerminalApiKey: getEnv("GECKOTERMINAL_API_KEY"),
