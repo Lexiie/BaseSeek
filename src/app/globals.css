@@ -4,40 +4,98 @@
 
 :root {
   color-scheme: dark;
-  background-color: #01030c;
+  --cyber-bg: #040012;
+  --cyber-accent: #00f0ff;
+  --cyber-hot: #ff00e5;
+  --cyber-muted: #7b7d91;
 }
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.2), transparent 35%), #01030c;
-  color: #f8fafc;
-  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+  background-color: var(--cyber-bg);
+  color: #eff6ff;
+  font-family: "Space Grotesk", ui-sans-serif, system-ui;
+}
+
+.cyber-bg {
+  background: radial-gradient(circle at 20% 20%, rgba(0, 240, 255, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 10%, rgba(255, 0, 229, 0.25), transparent 55%),
+    linear-gradient(135deg, #040012 0%, #050421 45%, #080829 100%);
+}
+
+.cyber-grid {
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 229, 0.06) 1px, transparent 1px);
+  background-size: 140px 140px;
+  opacity: 0.4;
+  mask-image: radial-gradient(circle, black, transparent 70%);
+  pointer-events: none;
 }
 
 ::selection {
-  background: rgba(14, 165, 233, 0.35);
-}
-
-.gradient-glow {
-  position: absolute;
-  inset: -20% -10% auto -10%;
-  height: 480px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.4) 0%, transparent 55%);
-  filter: blur(120px);
+  background: rgba(255, 0, 229, 0.5);
+  color: #050421;
 }
 
 @layer components {
-  .glass-panel {
-    @apply rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-card;
+  .cyber-panel {
+    @apply rounded-[32px] border border-cyber-500/40 bg-slate-950/60 p-6 text-cyber-50 shadow-[0_25px_80px_-40px_rgba(0,240,255,0.5)] sm:p-10;
+    backdrop-filter: blur(16px);
+  }
+
+  .cyber-chip {
+    @apply rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.4em] text-cyber-300;
   }
 }
 
+:root {
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f2937;
+  background: linear-gradient(180deg, var(--cyber-accent), var(--cyber-hot));
   border-radius: 999px;
+}
+
+.text-cyber-50 {
+  color: #f1f5ff;
+}
+
+.text-cyber-200 {
+  color: #b9bdd6;
+}
+
+.text-cyber-300 {
+  color: #8d8fb0;
+}
+
+.text-cyber-500 {
+  color: #00f0ff;
+}
+
+.border-cyber-500\/20 {
+  border-color: rgba(0, 240, 255, 0.2);
+}
+
+.border-cyber-500\/40 {
+  border-color: rgba(0, 240, 255, 0.4);
+}
+
+.bg-cyber-accent {
+  background: linear-gradient(120deg, #00f0ff, #7b5bfd);
+}
+
+.bg-cyber-hot {
+  background: linear-gradient(120deg, #ff00e5, #ff6b00);
+}
+
+.glow-ring {
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.35);
 }

@@ -6,13 +6,13 @@ export const metadata = {
 
 export default function ContractPage() {
   return (
-    <div className="space-y-8">
-      <section className="glass-panel px-6 py-8 sm:px-8">
-        <p className="text-[11px] uppercase tracking-[0.5em] text-slate-400">Smart Contract Analyzer</p>
-        <h1 className="mt-3 text-3xl font-semibold">ABI &amp; Risk Guardrail Review</h1>
-        <p className="mt-3 max-w-2xl text-sm text-slate-300">
-          Paste any Base contract address to fetch its ABI, run rule-based safety checks, and receive a Gemini
-          explanation focused on permissions and operational risk.
+    <div className="space-y-10">
+      <section className="cyber-panel">
+        <p className="cyber-chip">Smart contract watch</p>
+        <h1 className="mt-4 text-3xl font-semibold text-cyber-50">ABI & Risk Guardrail Review</h1>
+        <p className="mt-4 max-w-3xl text-sm text-cyber-200">
+          Paste a Base contract and let the neon auditor pull ABI data, highlight sensitive permissions, and output a
+          narrative that spots potential hazards before you deploy capital.
         </p>
       </section>
       <ContractAnalyzerClient />

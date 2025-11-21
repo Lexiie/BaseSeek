@@ -7,9 +7,9 @@ import { SourceList } from "@/components/SourceList";
 import type { SearchResultPayload } from "@/lib/types";
 
 const exampleQueries = [
-  "What tokens are trending on Base this week?",
-  "Explain how Aerodrome supports Base liquidity.",
-  "Which Base dapps have notable activity today?"
+  "Tracking new Base perps this week",
+  "Summarize grants flowing into Base DeFi",
+  "Which Base NFT drops are trending?"
 ];
 
 export function SearchClient() {
@@ -24,7 +24,7 @@ export function SearchClient() {
       .filter(Boolean);
 
   const fieldStyles =
-    "flex-1 rounded-2xl border border-white/15 bg-slate-950/50 px-5 py-4 text-base text-white placeholder-slate-500 transition focus:border-base-300 focus:outline-none";
+    "flex-1 rounded-[22px] border border-cyber-500/30 bg-black/50 px-5 py-4 text-base text-cyber-50 placeholder-cyber-300 transition focus:border-cyber-500 focus:outline-none";
   const runSearch = useCallback(async (prompt: string) => {
     setIsLoading(true);
     setError(null);
@@ -102,12 +102,12 @@ export function SearchClient() {
 
   return (
     <div className="space-y-6">
-      <section className="glass-panel p-6 sm:p-8">
+      <section className="cyber-panel">
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
-              <p>Search Base</p>
-              <p className="text-[10px] text-slate-500">AI safe mode</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.4em] text-cyber-300">
+              <p>Neon query</p>
+              <p className="text-cyber-500">Guardian mode</p>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:flex-row">
               <input
@@ -121,18 +121,18 @@ export function SearchClient() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="rounded-2xl bg-gradient-to-r from-base-500 to-sky-400 px-6 py-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+                className="rounded-[22px] bg-gradient-to-r from-cyan-400 via-sky-500 to-fuchsia-500 px-6 py-4 text-sm font-semibold text-black transition hover:opacity-90 disabled:opacity-50"
               >
-                {isLoading ? <LoadingDots /> : "Search"}
+                {isLoading ? <LoadingDots /> : "Pulse"}
               </button>
             </form>
           </div>
-          <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+          <div className="flex flex-wrap gap-2 text-xs text-cyber-200">
             {exampleQueries.map((example) => (
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="rounded-full border border-white/10 px-4 py-1.5 transition hover:border-white/40"
+                className="rounded-full border border-white/10 px-4 py-1.5 transition hover:border-cyan-300 hover:text-cyber-50"
               >
                 {example}
               </button>
@@ -143,62 +143,62 @@ export function SearchClient() {
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      <section className="glass-panel p-6 sm:p-8">
+      <section className="cyber-panel">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Response</p>
-            <h2 className="text-2xl font-semibold">Reasoned answer</h2>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-cyber-300">Response</p>
+            <h2 className="text-2xl font-semibold text-cyber-50">Synthesized answer</h2>
           </div>
           {result && (
             <button
               onClick={requestMore}
-              className="text-sm text-base-300 underline-offset-4 transition hover:text-white hover:underline"
+              className="text-sm text-cyber-500 underline-offset-4 transition hover:text-cyber-50 hover:underline"
             >
-              Explain more
+              Amplify insight
             </button>
           )}
         </div>
-        <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+        <div className="mt-5 rounded-[28px] border border-white/10 bg-black/60 p-5">
           {isLoading ? (
-            <p className="flex items-center gap-3 text-sm text-slate-300">
-              <span className="text-base-300">BaseSeek</span>
+            <p className="flex items-center gap-3 text-sm text-cyber-200">
+              <span className="text-cyber-500">BaseSeek</span>
               <LoadingDots />
             </p>
           ) : result ? (
-            <article className="space-y-5 break-words text-sm leading-relaxed text-slate-100">
+            <article className="space-y-5 break-words text-sm leading-relaxed text-cyber-50">
               <div className="space-y-2">
                 {formatSummary(result.summary).map((line) => (
                   <p key={line}>{line}</p>
                 ))}
               </div>
               {result.insights?.length > 0 && (
-                <ul className="list-disc space-y-1 pl-5 text-slate-200">
+                <ul className="list-disc space-y-1 pl-5 text-cyber-200">
                   {result.insights.map((insight) => (
                     <li key={insight}>{insight}</li>
                   ))}
                 </ul>
               )}
               {result.guardrail?.blocked && (
-                <p className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-amber-200">
+                <p className="rounded-2xl border border-amber-500/40 bg-amber-500/20 px-3 py-2 text-amber-100">
                   {result.guardrail.reason}
                 </p>
               )}
               <SourceList sources={result.sources} />
             </article>
           ) : (
-            <p className="text-sm text-slate-400">
-              Ask a question such as “What tokens are trending on Base this week?” to get started.
+            <p className="text-sm text-cyber-200">
+              Ask a question such as “Tracking new Base perps this week” to get started.
             </p>
           )}
         </div>
 
         {topTokenInsights.length > 0 && (
-          <div className="mt-6 grid gap-4 rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200 sm:grid-cols-2">
+          <div className="mt-6 grid gap-4 rounded-[28px] border border-white/10 bg-black/40 p-4 text-sm text-cyber-100 sm:grid-cols-2">
             <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Top tokens</p>
+              <p className="text-xs uppercase tracking-[0.4em] text-cyber-300">Top tokens</p>
               <ul className="mt-2 space-y-2">
                 {topTokenInsights.map((item) => (
-                  <li key={item} className="rounded-2xl border border-white/5 px-3 py-2 text-xs text-slate-300">
+                  <li key={item} className="rounded-2xl border border-white/5 px-3 py-2 text-xs text-cyber-200">
                     {item}
                   </li>
                 ))}
@@ -206,7 +206,7 @@ export function SearchClient() {
             </div>
             {result?.risks?.length ? (
               <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Risk flags</p>
+                <p className="text-xs uppercase tracking-[0.4em] text-cyber-300">Risk flags</p>
                 <div className="mt-3 space-y-2">
                   {result.risks.map((flag) => (
                     <RiskBadge key={flag.id} flag={flag} />
@@ -219,7 +219,7 @@ export function SearchClient() {
 
         {!topTokenInsights.length && result?.risks?.length ? (
           <div className="mt-6 space-y-2">
-            <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Risk flags</p>
+            <p className="text-xs uppercase tracking-[0.4em] text-cyber-300">Risk flags</p>
             <div className="grid gap-3 md:grid-cols-2">
               {result.risks.map((flag) => (
                 <RiskBadge key={flag.id} flag={flag} />
@@ -229,28 +229,26 @@ export function SearchClient() {
         ) : null}
 
         {result?.raw ? (
-          <section className="mt-6 space-y-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+          <section className="mt-6 space-y-3 rounded-[28px] border border-white/10 bg-black/30 p-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Raw context</p>
-              <p className="text-sm text-slate-400">
-                Snapshot of {rawFieldCount} top-level fields pulled into the answer.
-              </p>
+              <p className="text-xs uppercase tracking-[0.4em] text-cyber-300">Raw context</p>
+              <p className="text-sm text-cyber-200">Snapshot of {rawFieldCount} fields fused into the response.</p>
             </div>
             {rawSummaryEntries.length > 0 && (
-              <ul className="flex flex-wrap gap-2 text-[11px] text-slate-300">
+              <ul className="flex flex-wrap gap-2 text-[11px] text-cyber-200">
                 {rawSummaryEntries.map((item) => (
                   <li
                     key={item.key}
-                    className="rounded-full border border-white/10 bg-slate-950/40 px-3 py-1 text-left"
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-left"
                   >
-                    <span className="text-slate-500">{item.key}:</span> <span className="text-slate-100">{item.value}</span>
+                    <span className="text-cyber-300">{item.key}:</span> <span className="text-cyber-50">{item.value}</span>
                   </li>
                 ))}
               </ul>
             )}
-            <details className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-xs text-slate-300">
-              <summary className="cursor-pointer text-sm font-semibold text-slate-100">Expand structured detail</summary>
-              <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-white/5 bg-black/40 p-3 font-mono text-[11px] text-slate-200 whitespace-pre-wrap">
+            <details className="rounded-2xl border border-white/10 bg-black/50 p-4 text-xs text-cyber-200">
+              <summary className="cursor-pointer text-sm font-semibold text-cyber-50">Open structured detail</summary>
+              <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-white/5 bg-black/30 p-3 font-mono text-[11px] text-cyber-200 whitespace-pre-wrap">
                 {JSON.stringify(result.raw, null, 2)}
               </div>
             </details>

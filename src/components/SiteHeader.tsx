@@ -11,21 +11,23 @@ export function SiteHeader() {
   const closeMenu = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-5xl items-center gap-4 rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 shadow-card backdrop-blur-xl">
-        <Link href="/" className="flex flex-1 items-center gap-2 text-sm font-semibold tracking-tight" onClick={closeMenu}>
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-base-500/20 text-base-300">B</span>
+    <header className="sticky top-0 z-50 px-4 pt-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-6xl items-center gap-4 rounded-[28px] border border-cyber-500/40 bg-black/40 px-5 py-4 shadow-[0_25px_60px_-40px_rgba(0,240,255,0.8)] backdrop-blur-2xl">
+        <Link href="/" className="flex flex-1 items-center gap-3 text-sm font-semibold tracking-[0.2em]" onClick={closeMenu}>
+          <span className="glow-ring inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-cyber-accent text-lg text-black">
+            β
+          </span>
           <div>
-            <p className="text-base leading-none">BaseSeek</p>
-            <p className="text-[11px] font-normal text-slate-400">Base-native AI search</p>
+            <p className="text-lg text-cyber-50">BaseSeek</p>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-cyber-300">Neon Base intelligence</p>
           </div>
         </Link>
-        <nav className="hidden items-center gap-2 text-sm text-slate-300 md:flex">
+        <nav className="hidden items-center gap-3 text-xs uppercase tracking-[0.35em] text-cyber-300 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-3 py-1 transition hover:bg-white/5 hover:text-white"
+              className="rounded-full border border-white/10 px-4 py-2 transition hover:border-cyber-500/60 hover:text-cyber-50"
             >
               {link.label}
             </Link>
@@ -36,26 +38,26 @@ export function SiteHeader() {
           aria-expanded={open}
           aria-label="Toggle navigation"
           onClick={toggleMenu}
-          className="rounded-xl border border-white/10 p-2 text-slate-200 hover:border-white/30 md:hidden"
+          className="rounded-2xl border border-white/20 p-2 text-cyber-50 hover:border-cyber-500/60 md:hidden"
         >
           <span className="sr-only">Toggle navigation</span>
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
           </svg>
         </button>
       </div>
       <div
         className={`md:hidden transition-[max-height] duration-300 ease-in-out ${
-          open ? "max-h-48" : "max-h-0"
-        } overflow-hidden px-4 text-sm text-slate-200`}
+          open ? "max-h-64" : "max-h-0"
+        } overflow-hidden px-4 text-sm text-cyber-50`}
       >
-        <nav className="mx-auto mt-3 flex max-w-5xl flex-col gap-2 rounded-2xl border border-white/10 bg-slate-950/90 px-4 py-4 backdrop-blur">
+        <nav className="mx-auto mt-4 flex max-w-6xl flex-col gap-3 rounded-[28px] border border-cyber-500/30 bg-black/70 px-5 py-5 backdrop-blur-xl">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={closeMenu}
-              className="rounded-xl px-4 py-2 transition hover:bg-white/5"
+              className="rounded-2xl border border-white/10 px-4 py-3 text-xs uppercase tracking-[0.4em] transition hover:border-cyber-500/60"
             >
               {link.label}
             </Link>

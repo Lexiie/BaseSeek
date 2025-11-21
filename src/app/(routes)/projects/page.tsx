@@ -6,13 +6,13 @@ export const metadata = {
 
 export default function ProjectsPage() {
   return (
-    <div className="space-y-8">
-      <section className="glass-panel px-6 py-8 sm:px-8">
-        <p className="text-[11px] uppercase tracking-[0.5em] text-slate-400">Base Ecosystem Directory</p>
-        <h1 className="mt-3 text-3xl font-semibold">Curated Base Projects</h1>
-        <p className="mt-3 max-w-3xl text-sm text-slate-300">
-          Filter by category, scan highlights, and discover Base-native dapps from a lightweight curated list.
-          Everything ships from a static JSON so the experience stays fast on mobile.
+    <div className="space-y-10">
+      <section className="cyber-panel">
+        <p className="cyber-chip">Base ecosystem directory</p>
+        <h1 className="mt-4 text-3xl font-semibold text-cyber-50">Curated Base Projects</h1>
+        <p className="mt-4 max-w-3xl text-sm text-cyber-200">
+          Filter neon-tagged Base dapps, parse their highlights, and keep tabs on who is experimenting with the chain’s
+          bleeding edge—no dashboards required.
         </p>
       </section>
       <ProjectDirectoryClient />

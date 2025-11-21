@@ -39,67 +39,65 @@ export function ProjectDirectoryClient() {
   }, [query, category]);
 
   return (
-    <section className="glass-panel p-6 sm:p-8">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4 md:flex-row">
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search project name or keyword"
-            className="flex-1 rounded-2xl border border-white/10 bg-slate-950/50 px-5 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-base-300"
-          />
-          <select
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className="rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-sm text-white"
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-        {loading && <p className="text-sm text-slate-400">Loading directory...</p>}
-        <div className="grid gap-5 sm:grid-cols-2">
-          {projects.map((project) => (
-            <article key={project.name} className="rounded-3xl border border-white/10 bg-slate-950/50 p-5 shadow-card">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold">{project.name}</h3>
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{project.category}</p>
-                </div>
-                <a
-                  href={project.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs text-base-300 underline-offset-4 hover:text-white hover:underline"
-                >
-                  Website
-                </a>
-              </div>
-              <p className="mt-3 text-sm text-slate-200">{project.description}</p>
-              {project.highlights?.length ? (
-                <ul className="mt-3 list-disc space-y-1 pl-4 text-xs text-slate-400">
-                  {project.highlights.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : null}
-              <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-300">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-white/10 px-2 py-1">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </article>
+    <section className="cyber-panel space-y-6">
+      <div className="flex flex-col gap-4 md:flex-row">
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search project name or keyword"
+          className="flex-1 rounded-[22px] border border-cyber-500/30 bg-black/40 px-5 py-3 text-sm text-cyber-50 placeholder-cyber-300 outline-none focus:border-cyber-500"
+        />
+        <select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          className="rounded-[22px] border border-cyber-500/30 bg-black/40 px-4 py-3 text-sm text-cyber-50"
+        >
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
-        </div>
-        {!projects.length && !loading && (
-          <p className="text-center text-sm text-slate-400">No projects match the current filters.</p>
-        )}
+        </select>
       </div>
+      {loading && <p className="text-sm text-cyber-200">Loading directory...</p>}
+      <div className="grid gap-5 md:grid-cols-2">
+        {projects.map((project) => (
+          <article key={project.name} className="rounded-[28px] border border-white/15 bg-black/40 p-5 shadow-[0_20px_60px_-40px_rgba(255,0,229,0.6)]">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h3 className="text-lg font-semibold text-cyber-50">{project.name}</h3>
+                <p className="text-xs uppercase tracking-[0.3em] text-cyber-300">{project.category}</p>
+              </div>
+              <a
+                href={project.website}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs uppercase tracking-[0.3em] text-cyber-500 underline-offset-4 hover:text-cyber-50 hover:underline"
+              >
+                Website
+              </a>
+            </div>
+            <p className="mt-3 text-sm text-cyber-100">{project.description}</p>
+            {project.highlights?.length ? (
+              <ul className="mt-3 list-disc space-y-1 pl-4 text-xs text-cyber-300">
+                {project.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+            <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-cyber-200">
+              {project.tags.map((tag) => (
+                <span key={tag} className="rounded-full border border-white/10 px-2 py-1">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      {!projects.length && !loading && (
+        <p className="text-center text-sm text-cyber-200">No projects match the current filters.</p>
+      )}
     </section>
   );
 }
