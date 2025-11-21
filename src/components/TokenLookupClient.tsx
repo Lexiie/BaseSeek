@@ -46,41 +46,41 @@ export function TokenLookupClient() {
   };
 
   return (
-    <section className="rounded-3xl border border-white/5 bg-slate-900/30 p-6 shadow-card">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <section className="glass-panel p-6 sm:p-8">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Token Lookup</p>
-          <h2 className="text-2xl font-semibold">Instant Token Diagnostics</h2>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Token Lookup</p>
+          <h2 className="mt-1 text-3xl font-semibold">Instant diagnostics</h2>
+          <p className="mt-2 text-sm text-slate-400">
             Pull lightweight market + holder stats and summarize them with AI.
           </p>
         </div>
-        <form onSubmit={lookup} className="flex w-full flex-col gap-3 md:w-1/2 md:flex-row">
+        <form onSubmit={lookup} className="flex w-full flex-col gap-3 md:w-1/2">
           <input
             value={address}
             onChange={(event) => setAddress(event.target.value)}
             placeholder="Token address"
-            className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-white outline-none focus:border-base-500"
+            className="rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-base-300"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="rounded-2xl bg-base-500 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+            className="rounded-2xl bg-gradient-to-r from-base-500 to-sky-400 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
           >
-            {isLoading ? <LoadingDots /> : "Check"}
+            {isLoading ? <LoadingDots /> : "Check token"}
           </button>
         </form>
       </div>
       {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
       {result && (
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <article className="space-y-3">
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <article className="space-y-4 rounded-2xl border border-white/10 bg-slate-950/50 p-5">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Token</p>
-              <h3 className="text-xl font-semibold">{result.token.name ?? result.token.symbol}</h3>
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Token</p>
+              <h3 className="text-2xl font-semibold">{result.token.name ?? result.token.symbol}</h3>
               <p className="text-sm text-slate-400">{result.token.symbol}</p>
             </div>
-            <dl className="grid grid-cols-2 gap-3 text-sm">
+            <dl className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <dt className="text-slate-400">Price</dt>
                 <dd className="text-white">${formatNumber(result.token.priceUsd)}</dd>
@@ -107,8 +107,8 @@ export function TokenLookupClient() {
               ))}
             </div>
           </article>
-          <article className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">AI Summary</p>
+          <article className="space-y-4 rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+            <p className="text-xs uppercase tracking-[0.35em] text-slate-500">AI Summary</p>
             <div className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-100 break-words">
               {formatSummary(result.aiSummary).map((line) => (
                 <p key={line} className="mb-2 last:mb-0">
@@ -118,7 +118,7 @@ export function TokenLookupClient() {
             </div>
             {result.risks.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Risk Flags</p>
+                <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Risk Flags</p>
                 {result.risks.map((flag) => (
                   <RiskBadge key={flag.id} flag={flag} />
                 ))}

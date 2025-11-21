@@ -4,14 +4,33 @@
 
 :root {
   color-scheme: dark;
-  background-color: #020617;
+  background-color: #01030c;
 }
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(59, 130, 246, 0.12), transparent 40%), #020617;
+  background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.2), transparent 35%), #01030c;
   color: #f8fafc;
-  font-family: "Inter", ui-sans-serif, system-ui;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.35);
+}
+
+.gradient-glow {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 480px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.4) 0%, transparent 55%);
+  filter: blur(120px);
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-card;
+  }
 }
 
 ::-webkit-scrollbar {

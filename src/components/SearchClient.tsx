@@ -23,6 +23,8 @@ export function SearchClient() {
       .map((line) => line.replace(/\*\*/g, "").trim())
       .filter(Boolean);
 
+  const fieldStyles =
+    "flex-1 rounded-2xl border border-white/15 bg-slate-950/50 px-5 py-4 text-base text-white placeholder-slate-500 transition focus:border-base-300 focus:outline-none";
   const runSearch = useCallback(async (prompt: string) => {
     setIsLoading(true);
     setError(null);
@@ -69,83 +71,86 @@ export function SearchClient() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-white/5 bg-slate-900/40 p-6 shadow-card">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:flex-row">
-          <input
-            type="text"
-            name="search"
-            value={searchInput}
-            onChange={(event) => setSearchInput(event.target.value)}
-            placeholder="Ask anything about Base..."
-            className="flex-1 rounded-2xl border border-white/10 bg-slate-900/60 px-5 py-4 text-base text-white outline-none transition focus:border-base-500"
-          />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="rounded-2xl bg-base-500 px-6 py-4 font-semibold text-white transition hover:bg-base-300 disabled:opacity-60"
-          >
-            {isLoading ? <LoadingDots /> : "Search"}
-          </button>
-        </form>
-        <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-400">
-          {exampleQueries.map((example) => (
-            <button
-              key={example}
-              onClick={() => handleExampleClick(example)}
-              className="rounded-full border border-white/10 px-3 py-1 transition hover:border-base-500 hover:text-white"
-            >
-              {example}
-            </button>
-          ))}
+      <section className="glass-panel p-6 sm:p-8">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
+              <p>Search Base</p>
+              <p className="text-[10px] text-slate-500">AI safe mode</p>
+            </div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:flex-row">
+              <input
+                type="text"
+                name="search"
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                placeholder="Ask anything about Base..."
+                className={fieldStyles}
+              />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="rounded-2xl bg-gradient-to-r from-base-500 to-sky-400 px-6 py-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+              >
+                {isLoading ? <LoadingDots /> : "Search"}
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+            {exampleQueries.map((example) => (
+              <button
+                key={example}
+                onClick={() => handleExampleClick(example)}
+                className="rounded-full border border-white/10 px-4 py-1.5 transition hover:border-white/40"
+              >
+                {example}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      <section className="rounded-3xl border border-white/5 bg-slate-900/40 p-6 shadow-card">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Search Result</h2>
+      <section className="glass-panel p-6 sm:p-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-slate-400">Response</p>
+            <h2 className="text-2xl font-semibold">Reasoned answer</h2>
+          </div>
           {result && (
             <button
               onClick={requestMore}
-              className="text-sm text-base-300 underline-offset-4 hover:underline"
+              className="text-sm text-base-300 underline-offset-4 transition hover:text-white hover:underline"
             >
               Explain more
             </button>
           )}
         </div>
-        <div className="mt-4 min-h-[160px] rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+        <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/60 p-4">
           {isLoading ? (
             <p className="flex items-center gap-3 text-sm text-slate-300">
               <span className="text-base-300">BaseSeek</span>
               <LoadingDots />
             </p>
           ) : result ? (
-            <article className="space-y-4 break-words text-sm leading-relaxed text-slate-100">
+            <article className="space-y-5 break-words text-sm leading-relaxed text-slate-100">
               <div className="space-y-2">
                 {formatSummary(result.summary).map((line) => (
                   <p key={line}>{line}</p>
                 ))}
               </div>
               {result.insights?.length > 0 && (
-                <ul className="list-disc space-y-1 pl-5">
+                <ul className="list-disc space-y-1 pl-5 text-slate-200">
                   {result.insights.map((insight) => (
                     <li key={insight}>{insight}</li>
                   ))}
                 </ul>
               )}
-              {topTokenInsights.length > 0 && (
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Top Tokens</p>
-                  <ul className="mt-2 list-disc space-y-1 pl-5">
-                    {topTokenInsights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
               {result.guardrail?.blocked && (
-                <p className="text-amber-300">{result.guardrail.reason}</p>
+                <p className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-amber-200">
+                  {result.guardrail.reason}
+                </p>
               )}
               <SourceList sources={result.sources} />
             </article>
@@ -156,9 +161,34 @@ export function SearchClient() {
           )}
         </div>
 
-        {result?.risks?.length ? (
+        {topTokenInsights.length > 0 && (
+          <div className="mt-6 grid gap-4 rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200 sm:grid-cols-2">
+            <div>
+              <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Top tokens</p>
+              <ul className="mt-2 space-y-2">
+                {topTokenInsights.map((item) => (
+                  <li key={item} className="rounded-2xl border border-white/5 px-3 py-2 text-xs text-slate-300">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {result?.risks?.length ? (
+              <div>
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Risk flags</p>
+                <div className="mt-3 space-y-2">
+                  {result.risks.map((flag) => (
+                    <RiskBadge key={flag.id} flag={flag} />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        )}
+
+        {!topTokenInsights.length && result?.risks?.length ? (
           <div className="mt-6 space-y-2">
-            <p className="text-xs uppercase tracking-widest text-slate-400">Risk Flags</p>
+            <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Risk flags</p>
             <div className="grid gap-3 md:grid-cols-2">
               {result.risks.map((flag) => (
                 <RiskBadge key={flag.id} flag={flag} />
