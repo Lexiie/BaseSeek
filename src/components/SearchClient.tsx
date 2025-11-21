@@ -100,6 +100,13 @@ export function SearchClient() {
       ? Object.keys(result.raw as Record<string, unknown>).length
       : 0;
 
+  const filteredSources = result?.sources?.filter((source) => {
+    if (!source?.label) return true;
+    const label = source.label.toLowerCase();
+    const blocked = ["geckoterminal", "aerodrome", "curated project"];
+    return !blocked.some((needle) => label.includes(needle));
+  });
+
   return (
     <div className="space-y-6">
       <section className="cyber-panel">
@@ -183,7 +190,7 @@ export function SearchClient() {
                   {result.guardrail.reason}
                 </p>
               )}
-              <SourceList sources={result.sources} />
+              <SourceList sources={filteredSources ?? []} />
             </article>
           ) : (
             <p className="text-sm text-cyber-200">
