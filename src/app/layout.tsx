@@ -9,8 +9,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "BaseSeek",
-  description: "BaseSeek – AI search engine for the Base ecosystem.",
+  title: "BaseSeek AI | Neon Base Intelligence",
+  description: "Cyberpunk AI copilot for Base – search tokens, contracts, and projects with curated onchain data.",
   metadataBase: new URL("https://baseseek.local")
 };
 

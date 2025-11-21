@@ -74,44 +74,16 @@ export function TokenLookupClient() {
       </div>
       {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
       {result && (
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <article className="space-y-4 rounded-[28px] border border-white/15 bg-black/50 p-5">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-cyber-300">Token</p>
-              <h3 className="text-2xl font-semibold text-cyber-50">{result.token.name ?? result.token.symbol}</h3>
-              <p className="text-sm text-cyber-200">{result.token.symbol}</p>
+        <div className="mt-10 space-y-8">
+          <section className="rounded-[32px] border border-white/15 bg-black/40 p-6">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.4em] text-cyber-300">Token response</p>
+                <h3 className="text-2xl font-semibold text-cyber-50">AI status report</h3>
+              </div>
             </div>
-            <dl className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <dt className="text-cyber-300">Price</dt>
-                <dd className="text-cyber-50">${formatNumber(result.token.priceUsd)}</dd>
-              </div>
-              <div>
-                <dt className="text-cyber-300">Liquidity</dt>
-                <dd className="text-cyber-50">${formatNumber(result.token.liquidityUsd)}</dd>
-              </div>
-              <div>
-                <dt className="text-cyber-300">Volume 24h</dt>
-                <dd className="text-cyber-50">${formatNumber(result.token.volume24hUsd)}</dd>
-              </div>
-              <div>
-                <dt className="text-cyber-300">Holders</dt>
-                <dd className="text-cyber-50">{formatInteger(result.token.holders)}</dd>
-              </div>
-            </dl>
-            <div className="text-xs text-cyber-300">
-              Sources:
-              {result.sources.map((source) => (
-                <a key={source.url} className="ml-2 underline" href={source.url} target="_blank" rel="noreferrer">
-                  {source.label}
-                </a>
-              ))}
-            </div>
-          </article>
-          <article className="space-y-4 rounded-[28px] border border-white/15 bg-black/50 p-5">
-            <p className="text-xs uppercase tracking-[0.35em] text-cyber-300">AI Summary</p>
-            <div className="space-y-3">
-              <div className="rounded-[24px] border border-white/10 bg-black/40 p-4 text-sm leading-relaxed text-cyber-50">
+            <div className="mt-5 space-y-4">
+              <div className="rounded-[26px] border border-white/10 bg-black/60 p-4 text-sm leading-relaxed text-cyber-50">
                 {aiSummaryPreview.length ? (
                   aiSummaryPreview.map((line) => (
                     <p key={line} className="mb-2 break-words text-cyber-100 last:mb-0">
@@ -123,7 +95,7 @@ export function TokenLookupClient() {
                 )}
               </div>
               {aiSummaryDetails.length > 0 && (
-                <details className="rounded-[24px] border border-white/10 bg-black/30 p-4 text-xs text-cyber-200">
+                <details className="rounded-[26px] border border-white/10 bg-black/40 p-4 text-xs text-cyber-200">
                   <summary className="cursor-pointer text-sm font-semibold text-cyber-50">View AI details</summary>
                   <div className="mt-3 max-h-60 space-y-2 overflow-auto text-sm leading-relaxed text-cyber-50">
                     {aiSummaryDetails.map((line) => (
@@ -136,14 +108,70 @@ export function TokenLookupClient() {
               )}
             </div>
             {result.risks.length > 0 && (
-              <div className="space-y-2">
+              <div className="mt-6 space-y-2">
                 <p className="text-xs uppercase tracking-[0.35em] text-cyber-300">Risk Flags</p>
-                {result.risks.map((flag) => (
-                  <RiskBadge key={flag.id} flag={flag} />
-                ))}
+                <div className="space-y-2">
+                  {result.risks.map((flag) => (
+                    <RiskBadge key={flag.id} flag={flag} />
+                  ))}
+                </div>
               </div>
             )}
-          </article>
+          </section>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <article className="space-y-4 rounded-[28px] border border-white/15 bg-black/50 p-5">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-cyber-300">Token</p>
+                <h3 className="text-2xl font-semibold text-cyber-50">{result.token.name ?? result.token.symbol}</h3>
+                <p className="text-sm text-cyber-200">{result.token.symbol}</p>
+              </div>
+              <dl className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <dt className="text-cyber-300">Price</dt>
+                  <dd className="text-cyber-50">${formatNumber(result.token.priceUsd)}</dd>
+                </div>
+                <div>
+                  <dt className="text-cyber-300">Liquidity</dt>
+                  <dd className="text-cyber-50">${formatNumber(result.token.liquidityUsd)}</dd>
+                </div>
+                <div>
+                  <dt className="text-cyber-300">Volume 24h</dt>
+                  <dd className="text-cyber-50">${formatNumber(result.token.volume24hUsd)}</dd>
+                </div>
+                <div>
+                  <dt className="text-cyber-300">Holders</dt>
+                  <dd className="text-cyber-50">{formatInteger(result.token.holders)}</dd>
+                </div>
+              </dl>
+              <div className="text-xs text-cyber-300">
+                Sources:
+                {result.sources.map((source) => (
+                  <a key={source.url} className="ml-2 underline" href={source.url} target="_blank" rel="noreferrer">
+                    {source.label}
+                  </a>
+                ))}
+              </div>
+            </article>
+
+            <article className="rounded-[28px] border border-white/15 bg-black/50 p-5">
+              <p className="text-xs uppercase tracking-[0.35em] text-cyber-300">Key telemetry</p>
+              <ul className="mt-3 space-y-3 text-sm text-cyber-100">
+                <li className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.3em] text-cyber-300">Liquidity depth</p>
+                  <p className="text-lg font-semibold text-cyber-50">${formatNumber(result.token.liquidityUsd)}</p>
+                </li>
+                <li className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.3em] text-cyber-300">Holder count</p>
+                  <p className="text-lg font-semibold text-cyber-50">{formatInteger(result.token.holders)}</p>
+                </li>
+                <li className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.3em] text-cyber-300">24h volume</p>
+                  <p className="text-lg font-semibold text-cyber-50">${formatNumber(result.token.volume24hUsd)}</p>
+                </li>
+              </ul>
+            </article>
+          </div>
         </div>
       )}
     </section>
