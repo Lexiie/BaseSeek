@@ -3,27 +3,23 @@ import { env } from "./env";
 import { fetchJson, safeFetch } from "./http";
 import type { ProjectEntry, TokenMetrics } from "./types";
 
-const DEXSCREENER_BASE_URL = (env.dexscreenerBaseUrl ?? "https://api.dexscreener.com").replace(/\/$/, "");
-const DEXSCREENER_TOKEN_ENDPOINT = `${DEXSCREENER_BASE_URL}/latest/dex/tokens/`;
-const DEXSCREENER_TRENDING_ENDPOINT = `${DEXSCREENER_BASE_URL}/latest/dex/trending/base`;
+const DEXSCREENER_TOKEN_ENDPOINT = "https://api.dexscreener.com/latest/dex/tokens/";
+const DEXSCREENER_TRENDING_ENDPOINT = "https://api.dexscreener.com/latest/dex/trending/base";
 const GECKOTERMINAL_AERODROME_ENDPOINT =
   "https://api.geckoterminal.com/api/v2/networks/base/dexes/aerodrome-base/pools";
-const BASESCAN_API_ENDPOINT = (env.basescanApiUrl ?? "https://api.basescan.org/api").replace(/\/$/, "");
-const BASESCAN_AUTH_HEADERS = env.basescanMcpAuthToken
-  ? { Authorization: `Bearer ${env.basescanMcpAuthToken}` }
-  : undefined;
+const ETHERSCAN_API_V2 = "https://api.etherscan.io/v2/api";
 
 function getEtherscanApiKey() {
   return env.etherscanApiKey ?? env.basescanApiKey ?? "";
 }
 
-function buildBaseExplorerUrl(params: Record<string, string>) {
+function buildEtherscanUrl(params: Record<string, string>) {
   const search = new URLSearchParams({
     chainid: env.etherscanChainId ?? "8453",
     apikey: getEtherscanApiKey(),
     ...params
   });
-  return `${BASESCAN_API_ENDPOINT}?${search.toString()}`;
+  return `${ETHERSCAN_API_V2}?${search.toString()}`;
 }
 
 export async function fetchTrendingTokens() {
@@ -47,10 +43,8 @@ export async function fetchBaseScanToken(address: string) {
   if (!apiKey) return undefined;
 
   return safeFetch(async () => {
-    const url = buildBaseExplorerUrl({ module: "token", action: "tokeninfo", contractaddress: address });
-    const data = await fetchJson<{ result?: TokenMetrics | TokenMetrics[] }>(url, {
-      headers: BASESCAN_AUTH_HEADERS
-    });
+    const url = buildEtherscanUrl({ module: "token", action: "tokeninfo", contractaddress: address });
+    const data = await fetchJson<{ result?: TokenMetrics | TokenMetrics[] }>(url);
     const result = data.result;
     if (Array.isArray(result)) {
       return result[0];
@@ -64,10 +58,8 @@ export async function fetchBaseScanAbi(address: string) {
   if (!apiKey) return undefined;
 
   return safeFetch(async () => {
-    const url = buildBaseExplorerUrl({ module: "contract", action: "getabi", address });
-    const data = await fetchJson<{ result?: unknown }>(url, {
-      headers: BASESCAN_AUTH_HEADERS
-    });
+    const url = buildEtherscanUrl({ module: "contract", action: "getabi", address });
+    const data = await fetchJson<{ result?: unknown }>(url);
     const result = data.result;
     let abiRaw: string | undefined;
 

@@ -11,9 +11,5 @@ export const env = {
   etherscanApiKey: getEnv("ETHERSCAN_API_KEY"),
   geckoTerminalApiKey: getEnv("GECKOTERMINAL_API_KEY"),
   etherscanChainId: getEnv("ETHERSCAN_CHAIN_ID", "8453"),
-  appUrl: getEnv("APP_URL", "http://localhost:3000"),
-  dexscreenerBaseUrl: getEnv("DEXSCREENER_MCP_BASE_URL", "https://mcpmarket.com/server/dexscreener"),
-  basescanApiUrl: getEnv("BASESCAN_API_URL", "https://mcpmarket.com/server/basescan/api"),
-  etherscanApiUrl: getEnv("ETHERSCAN_API_URL", "https://mcpmarket.com/server/basescan/api"),
-  basescanMcpAuthToken: getEnv("BASESCAN_MCP_TOKEN")
+  appUrl: getEnv("APP_URL", "http://localhost:3000")
 };
